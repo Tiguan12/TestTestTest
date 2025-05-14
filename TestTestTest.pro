@@ -9,29 +9,42 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    main.cpp \
-    mainwindow.cpp
+	main.cpp \
+	mainwindow.cpp \
+	rechenoperation.cpp
 
 HEADERS += \
-    ../../Ivium_Software Development Driver/IVIUM_remdriver.h \
-    ../../Ivium_Software Development Driver/IVIUM_remdriver.h \
-    ../../Ivium_Software Development Driver/Ivium_remdriver64.h \
-    ../../Ivium_Software Development Driver/Ivium_remdriver64.h \
-    ../../Ivium_Software Development Driver/Ivium_remdriver64.h \
-    Ivium_remdriver64.h \
-    mainwindow.h
+	mainwindow.h \
+	rechenoperation.h
 
 FORMS += \
-    mainwindow.ui
+	mainwindow.ui
 
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
 
-DISTFILES += \
-	../../Ivium_Software Development Driver/IVIUM_remdriver.dll \
-	../../Ivium_Software Development Driver/Ivium_remdriver64.dll \
-	../../Ivium_Software Development Driver/Ivium_remdriver64.dll \
-	IVIUM_remdriver.dll \
-	Ivium_remdriver64.dll
+DISTFILES +=
+
+RESOURCES += \
+	Bild.qrc
+
+
+
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../Einbindungsversuch/release/ -lIvium_remdriver64
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../Einbindungsversuch/debug/ -lIvium_remdriver64
+
+#INCLUDEPATH += $$PWD/../../../../Einbindungsversuch/debug
+#DEPENDPATH += $$PWD/../../../../Einbindungsversuch/debug
+
+#win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Einbindungsversuch/release/libIvium_remdriver64.a
+#else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Einbindungsversuch/debug/libIvium_remdriver64.a
+#else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Einbindungsversuch/release/Ivium_remdriver64.lib
+#else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Einbindungsversuch/debug/Ivium_remdriver64.lib
+
+
+
+
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/./release/ -lIvium_remdriver64
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/./debug/ -lIvium_remdriver64
+
+INCLUDEPATH += $$PWD/debug
+DEPENDPATH += $$PWD/debug

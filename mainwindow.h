@@ -3,7 +3,8 @@
 
 #include <QMainWindow>
 #include <QTimer>
-#include "IVIUM_remdriver64.h"
+#include <QElapsedTimer>
+#include <QVector>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,17 +18,38 @@ class MainWindow : public QMainWindow
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    public slots:
-    void WerteAusgabe();
-
     private slots:
+    void WerteAusgabe();
     void on_startButton_clicked();
     void on_stopButton_clicked();
-
     void on_delButton_clicked();
+    void on_Starten_clicked();
+    void on_Beenden_clicked();
+    void on_buttonNennSpg_clicked();
+    void on_SocButton_clicked();
+    //void on_progressBar_valueChanged(int value);
+
+    void on_BatterieAnzeige_valueChanged(int value);
+    void on_BatterieAnzeigeSOH_valueChanged(int value);
+    void on_SohButton_clicked();  // ✔️ korrekt
+
+
+    //void on_buttonNennSpg_3_clicked();
+
+    void on_pushButtonQ_0_clicked();
+    void logNachricht(const QString &nachricht);
+
 
     private:
     Ui::MainWindow *ui;
-    QTimer *timer;
+    QTimer* timer;
+    QElapsedTimer zeit;
+
+    double potential = 0.0;
+    double current = 0.0;
+    double nennKapazitaet = 2.0;
+
+    QVector<QVector<double>> tabelle;  // Speicher für [Zeit, Spannung, Strom]
 };
+
 #endif // MAINWINDOW_H
