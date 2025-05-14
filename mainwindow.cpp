@@ -247,3 +247,25 @@ void MainWindow::on_dial_valueChanged(int value)
     IV_SelectChannel(&channel);
 }
 
+void MainWindow::on_checkBox_clicked()
+{
+    if (ui->checkBox->isChecked()) {
+        // Wenn die Checkbox aktiviert ist, den Dial aktivieren
+        ui->dial->setEnabled(true);
+
+        // Optional: Setze den Dial auf den aktuellen Wert, falls gewünscht
+        int currentDialValue = ui->dial->value();
+        long channel = static_cast<long>(currentDialValue);  // Konvertiere int zu long
+        IV_SelectChannel(&channel);  // Setze den Kanal auf den aktuellen Dial-Wert
+    } else {
+        // Wenn die Checkbox deaktiviert ist, den Dial deaktivieren
+        ui->dial->setEnabled(false);
+
+        // Optional: Setze den Dial auf einen Standardwert (z.B. 0)
+        ui->dial->setValue(0);
+
+        // Optional: Setze den Kanal auf einen inaktiven Wert, z.B. 0 oder -1
+        long disabledChannel = 0;  // 0 als Platzhalter für "kein Kanal ausgewählt"
+        IV_SelectChannel(&disabledChannel);  // Deaktiviere den Kanal
+    }
+}
