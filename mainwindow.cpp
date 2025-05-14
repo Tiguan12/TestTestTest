@@ -50,9 +50,17 @@ void MainWindow::WerteAusgabe()
     timerTest.start();
 
     int rowCount = ui->tableWidget->rowCount();
+    int dialValue = ui->dial->value();
     int elapsed = zeit.elapsed();
     int sekunden = elapsed / 1000;
-    QString timeString = QString::number(sekunden);
+    //QString timeString = QString::number(sekunden);
+
+    // Umwandlung der verstrichenen Zeit in QTime
+    QTime time(0, 0);
+    time = time.addSecs(sekunden);
+
+    // Formatierung der Zeit im Format "hh:mm:ss"
+    QString timeString = time.toString("hh:mm:ss");
 
     IV_getpotential(&potential);
     IV_getcurrent(&current);
@@ -61,9 +69,12 @@ void MainWindow::WerteAusgabe()
     ui->tableWidget->insertRow(rowCount);
     ui->tableWidget->setItem(rowCount, 0, new QTableWidgetItem(QString::number(rowCount + 1)));
     ui->tableWidget->setItem(rowCount, 1, new QTableWidgetItem(timeString));
-    ui->tableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString::number(potential)));
-    ui->tableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(current)));
-    ui->tableWidget->setItem(rowCount, 4, new QTableWidgetItem(QString::number(kapazitaet)));
+    ui->tableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString::number(dialValue)));
+    ui->tableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(potential)));
+    ui->tableWidget->setItem(rowCount, 4, new QTableWidgetItem(QString::number(current)));
+    ui->tableWidget->setItem(rowCount, 5, new QTableWidgetItem(QString::number(nennKapazitaet)));
+    ui->tableWidget->setItem(rowCount, 6, new QTableWidgetItem(QString::number(Q_0)));
+
 
     QVector<double> zeile;
     zeile << (elapsed / 1000.0) << potential << current << kapazitaet;

@@ -92,6 +92,11 @@
             </column>
             <column>
              <property name="text">
+              <string>Channel</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
               <string>Strom [A] </string>
              </property>
             </column>
@@ -102,32 +107,12 @@
             </column>
             <column>
              <property name="text">
-              <string>Kapazität_Q [Ah]</string>
+              <string>Kapazität_Q_N [Ah]</string>
              </property>
             </column>
             <column>
              <property name="text">
-              <string>Neue Spalte</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Neue Spalte</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Neue Spalte</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Neue Spalte</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Neue Spalte</string>
+              <string>Kapazität_Q_0 [Ah]</string>
              </property>
             </column>
             <column>
