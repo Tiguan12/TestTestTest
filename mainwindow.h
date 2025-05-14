@@ -42,6 +42,8 @@ class MainWindow : public QMainWindow
 
     void on_dial_valueChanged(int value);
 
+    void on_checkBox_clicked();
+
     private:
     Ui::MainWindow *ui;
     QTimer* timer;
