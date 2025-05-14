@@ -78,30 +78,6 @@
         </item>
         <item>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="2" column="1">
-           <widget class="QPushButton" name="stopButton">
-            <property name="text">
-             <string>stop</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QDial" name="dial"/>
-          </item>
-          <item row="2" column="2">
-           <widget class="QPushButton" name="delButton">
-            <property name="text">
-             <string>delete</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QPushButton" name="startButton">
-            <property name="text">
-             <string>start</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="0" colspan="3">
            <widget class="QTableWidget" name="tableWidget">
             <column>
@@ -171,12 +147,78 @@
             </column>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QRadioButton" name="radioButton">
-            <property name="text">
-             <string>RadioButton</string>
+          <item row="7" column="1">
+           <widget class="QLCDNumber" name="lcdNumber">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="smallDecimalPoint">
+             <bool>false</bool>
+            </property>
+            <property name="digitCount">
+             <number>2</number>
+            </property>
+            <property name="segmentStyle">
+             <enum>QLCDNumber::Filled</enum>
             </property>
            </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPushButton" name="stopButton">
+            <property name="text">
+             <string>stop</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QPushButton" name="startButton">
+            <property name="text">
+             <string>start</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Channel-Auswahl</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QDial" name="dial">
+            <property name="maximum">
+             <number>20</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QPushButton" name="delButton">
+            <property name="text">
+             <string>delete</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2">
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Preferred</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </item>
@@ -517,5 +559,22 @@
  <resources>
   <include location="Bild.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>dial</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lcdNumber</receiver>
+   <slot>display(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>181</x>
+     <y>641</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>510</x>
+     <y>709</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

@@ -228,3 +228,11 @@ void MainWindow::logNachricht(const QString &nachricht)
         file.close();
     }
 }
+
+void MainWindow::on_dial_valueChanged(int value)
+{
+    // Mapping des Dial-Werts (0-20) auf einen Kanal (1-20)
+    long channel = value + 1;
+    IV_SelectChannel(&channel);
+}
+

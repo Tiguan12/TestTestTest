@@ -40,6 +40,8 @@ class MainWindow : public QMainWindow
     void logNachricht(const QString &nachricht);
 
 
+    void on_dial_valueChanged(int value);
+
     private:
     Ui::MainWindow *ui;
     QTimer* timer;
