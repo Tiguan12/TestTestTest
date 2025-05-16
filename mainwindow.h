@@ -5,6 +5,8 @@
 #include <QTimer>
 #include <QElapsedTimer>
 #include <QVector>
+#include <QTableWidgetItem>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -38,11 +40,12 @@ class MainWindow : public QMainWindow
 
     void on_pushButtonQ_0_clicked();
     void logNachricht(const QString &nachricht);
-
-
     void on_dial_valueChanged(int value);
-
     void on_checkBox_clicked();
+    void on_dial_Zeitintervall_valueChanged(int value);
+    void on_radioButton_Zeitformat_1_clicked();
+    void on_radioButton_Zeitformat_2_clicked();
+
 
     private:
     Ui::MainWindow *ui;
@@ -52,8 +55,13 @@ class MainWindow : public QMainWindow
     double potential = 0.0;
     double current = 0.0;
     double nennKapazitaet = 2.0;
+    int sekunden;
+    int rowCount;
+    QTableWidgetItem* timeItem; // Zeitempfänger
 
     QVector<QVector<double>> tabelle;  // Speicher für [Zeit, Spannung, Strom]
+    QString currentTimeFormat = "hh:mm:ss"; // Standardformat
+
 };
 
 #endif // MAINWINDOW_H

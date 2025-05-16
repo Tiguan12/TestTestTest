@@ -37,6 +37,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     nennKapazitaet = 2.0;
     ui->AnzeigeNspg->setValue(nennKapazitaet);
+
+
 }
 
 MainWindow::~MainWindow()
@@ -49,22 +51,43 @@ void MainWindow::WerteAusgabe()
     QElapsedTimer timerTest;
     timerTest.start();
 
-    int rowCount = ui->tableWidget->rowCount();
+     rowCount = ui->tableWidget->rowCount();
     int dialValue = ui->dial->value();
     int elapsed = zeit.elapsed();
-    int sekunden = elapsed / 1000;
-    //QString timeString = QString::number(sekunden);
+     sekunden = elapsed / 1000;
+
 
     // Umwandlung der verstrichenen Zeit in QTime
     QTime time(0, 0);
     time = time.addSecs(sekunden);
 
+    timeItem = new QTableWidgetItem();
+
+    //*****************************************************************************************************
+
+      QString timeString = QString::number(sekunden);
+
     // Formatierung der Zeit im Format "hh:mm:ss"
-    QString timeString = time.toString("hh:mm:ss");
+    //QString timeString = time.toString("hh:mm:ss");
+
+
+
+    //*****************************************************************************************************
 
     IV_getpotential(&potential);
     IV_getcurrent(&current);
+
+
     double kapazitaet = current * sekunden;
+
+    if (ui->radioButton_Zeitformat_1->isChecked()) {
+        QString timeString = QString::number(sekunden);
+    }
+    else {
+        timeString = time.toString("hh:mm:ss");
+    }
+
+
 
     ui->tableWidget->insertRow(rowCount);
     ui->tableWidget->setItem(rowCount, 0, new QTableWidgetItem(QString::number(rowCount + 1)));
@@ -269,3 +292,27 @@ void MainWindow::on_checkBox_clicked()
         IV_SelectChannel(&disabledChannel);  // Deaktiviere den Kanal
     }
 }
+
+void MainWindow::on_dial_Zeitintervall_valueChanged(int value)
+{
+    int intervall = value * 1000;
+    timer->stop();
+    timer->setInterval(intervall);
+    //timer->start();
+    logNachricht("Abtastintervall auf " + QString::number(intervall / 1000) + " Sekunden gesetzt.");
+}
+
+
+
+void MainWindow::on_radioButton_Zeitformat_1_clicked()
+{
+
+}
+
+void MainWindow::on_radioButton_Zeitformat_2_clicked()
+{
+
+}
+
+
+
