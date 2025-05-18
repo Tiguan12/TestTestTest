@@ -105,12 +105,12 @@
           </column>
           <column>
            <property name="text">
-            <string>Kapazität_Q_N [Ah]</string>
+            <string>Q_N [mAh]</string>
            </property>
           </column>
           <column>
            <property name="text">
-            <string>Kapazität_Q_0 [Ah]</string>
+            <string>Q_0 [mAh]</string>
            </property>
           </column>
           <column>

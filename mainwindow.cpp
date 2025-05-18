@@ -51,10 +51,11 @@ void MainWindow::WerteAusgabe()
     QElapsedTimer timerTest;
     timerTest.start();
 
-     rowCount = ui->tableWidget->rowCount();
+    rowCount = ui->tableWidget->rowCount();
     int dialValue = ui->dial->value();
+
     int elapsed = zeit.elapsed();
-     sekunden = elapsed / 1000;
+    sekunden = elapsed / 1000;
 
 
     // Umwandlung der verstrichenen Zeit in QTime
@@ -65,14 +66,7 @@ void MainWindow::WerteAusgabe()
 
     //*****************************************************************************************************
 
-      QString timeString = QString::number(sekunden);
-
-    // Formatierung der Zeit im Format "hh:mm:ss"
-    //QString timeString = time.toString("hh:mm:ss");
-
-
-
-    //*****************************************************************************************************
+    QString timeString;
 
     IV_getpotential(&potential);
     IV_getcurrent(&current);
@@ -81,10 +75,10 @@ void MainWindow::WerteAusgabe()
     double kapazitaet = current * sekunden;
 
     if (ui->radioButton_Zeitformat_1->isChecked()) {
-        QString timeString = QString::number(sekunden);
+        timeString = QString::number(sekunden);
     }
     else {
-        timeString = time.toString("hh:mm:ss");
+        timeString = time.toString("hh:mm:ss:zzz");
     }
 
 
@@ -97,7 +91,6 @@ void MainWindow::WerteAusgabe()
     ui->tableWidget->setItem(rowCount, 4, new QTableWidgetItem(QString::number(current)));
     ui->tableWidget->setItem(rowCount, 5, new QTableWidgetItem(QString::number(nennKapazitaet)));
     ui->tableWidget->setItem(rowCount, 6, new QTableWidgetItem(QString::number(Q_0)));
-
 
     QVector<double> zeile;
     zeile << (elapsed / 1000.0) << potential << current << kapazitaet;
@@ -298,7 +291,7 @@ void MainWindow::on_dial_Zeitintervall_valueChanged(int value)
     int intervall = value * 1000;
     timer->stop();
     timer->setInterval(intervall);
-    //timer->start();
+    timer->start();
     logNachricht("Abtastintervall auf " + QString::number(intervall / 1000) + " Sekunden gesetzt.");
 }
 
@@ -313,6 +306,3 @@ void MainWindow::on_radioButton_Zeitformat_2_clicked()
 {
 
 }
-
-
-
