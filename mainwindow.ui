@@ -233,7 +233,7 @@
             <item row="3" column="1">
              <widget class="QRadioButton" name="radioButton_Zeitformat_2">
               <property name="text">
-               <string>Zeit in &quot;hh:mm:tt&quot;</string>
+               <string>Zeit in &quot;hh:mm:tt:zzz&quot;</string>
               </property>
              </widget>
             </item>
