@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1023</width>
-    <height>765</height>
+    <width>1478</width>
+    <height>968</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,25 +18,25 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="tabPosition">
-       <enum>QTabWidget::North</enum>
+       <enum>QTabWidget::TabPosition::North</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
-       <enum>Qt::ElideLeft</enum>
+       <enum>Qt::TextElideMode::ElideLeft</enum>
       </property>
       <widget class="QWidget" name="StartStop">
        <attribute name="title">
         <string>Tab 1 (Start/Stop)</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_6">
+       <layout class="QVBoxLayout" name="verticalLayout_9">
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <spacer name="horizontalSpacer_4">
+           <spacer name="horizontalSpacer_5">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -59,97 +59,133 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_6">
-          <item>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="3" column="0">
+           <widget class="QPushButton" name="startButton">
+            <property name="text">
+             <string>Start</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="2">
            <widget class="QPushButton" name="Starten">
             <property name="text">
              <string>IviumSoft-Starten</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item row="1" column="0" colspan="4">
+           <widget class="QTableWidget" name="tableWidget">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustIgnored</enum>
+            </property>
+            <attribute name="horizontalHeaderVisible">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="horizontalHeaderCascadingSectionResizes">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>250</number>
+            </attribute>
+            <attribute name="horizontalHeaderHighlightSections">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>Nr.</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Zeit [s]</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Channel</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Strom [mA] </string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Spannung [V]</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Q_N [mAh]</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Q_0 [mAh]</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Q(t)</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Q_min</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Anzahl_Zyklen</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QPushButton" name="delButton">
+            <property name="text">
+             <string>Delete</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2" colspan="2">
            <widget class="QPushButton" name="Beenden">
             <property name="text">
              <string>IviumSoft-Beenden</string>
             </property>
            </widget>
           </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QTableWidget" name="tableWidget">
-          <column>
-           <property name="text">
-            <string>Nr.</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Zeit [s]</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Channel</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Strom [A] </string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Spannung [V]</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Q_N [mAh]</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Q_0 [mAh]</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Neue Spalte</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Neue Spalte</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Neue Spalte</string>
-           </property>
-          </column>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <item>
-           <widget class="QPushButton" name="startButton">
+          <item row="3" column="2">
+           <widget class="QPushButton" name="copyButton">
             <property name="text">
-             <string>start</string>
+             <string>Copy</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item row="3" column="1">
            <widget class="QPushButton" name="stopButton">
             <property name="text">
-             <string>stop</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="delButton">
-            <property name="text">
-             <string>delete</string>
+             <string>Stop</string>
             </property>
            </widget>
           </item>
@@ -164,13 +200,13 @@
               <property name="text">
                <string>Channel-Auswahl</string>
               </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
              </widget>
             </item>
             <item>
              <widget class="QDial" name="dial">
+              <property name="minimum">
+               <number>0</number>
+              </property>
               <property name="maximum">
                <number>20</number>
               </property>
@@ -191,10 +227,10 @@
           <item>
            <widget class="QLCDNumber" name="lcdNumber">
             <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
+             <enum>QFrame::Shape::Box</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
+             <enum>QFrame::Shadow::Raised</enum>
             </property>
             <property name="smallDecimalPoint">
              <bool>false</bool>
@@ -203,7 +239,13 @@
              <number>5</number>
             </property>
             <property name="segmentStyle">
-             <enum>QLCDNumber::Filled</enum>
+             <enum>QLCDNumber::SegmentStyle::Filled</enum>
+            </property>
+            <property name="value" stdset="0">
+             <double>1.000000000000000</double>
+            </property>
+            <property name="intValue" stdset="0">
+             <number>1</number>
             </property>
            </widget>
           </item>
@@ -212,46 +254,63 @@
             <property name="digitCount">
              <number>5</number>
             </property>
+            <property name="value" stdset="0">
+             <double>1.000000000000000</double>
+            </property>
+            <property name="intValue" stdset="0">
+             <number>1</number>
+            </property>
            </widget>
           </item>
           <item>
-           <layout class="QGridLayout" name="gridLayout">
-            <item row="0" column="1">
-             <widget class="QLabel" name="label_4">
-              <property name="text">
-               <string>Intervall in [Sec]</string>
-              </property>
-             </widget>
+           <layout class="QVBoxLayout" name="verticalLayout_8">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_6">
+              <item>
+               <widget class="QLabel" name="label_4">
+                <property name="text">
+                 <string>Intervall in [Sec]</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDial" name="dial_Zeitintervall">
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <number>60</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
-            <item row="1" column="1">
-             <widget class="QDial" name="dial_Zeitintervall">
-              <property name="maximum">
-               <number>60</number>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QRadioButton" name="radioButton_Zeitformat_2">
-              <property name="text">
-               <string>Zeit in &quot;hh:mm:tt:zzz&quot;</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QRadioButton" name="radioButton_Zeitformat_1">
-              <property name="text">
-               <string>Zeit in &quot;tt&quot;</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-              <property name="autoRepeat">
-               <bool>true</bool>
-              </property>
-              <property name="autoRepeatInterval">
-               <number>1</number>
-              </property>
-             </widget>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <item>
+               <widget class="QRadioButton" name="radioButton_Zeitformat_1">
+                <property name="text">
+                 <string>Zeit in &quot;tt&quot;</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+                <property name="autoRepeat">
+                 <bool>true</bool>
+                </property>
+                <property name="autoRepeatInterval">
+                 <number>1</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="radioButton_Zeitformat_2">
+                <property name="text">
+                 <string>Zeit in &quot;hh:mm:tt:zzz&quot;</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </item>
@@ -271,11 +330,8 @@
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <widget class="QSpinBox" name="ProzentAnzeigeSOH">
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
             <property name="buttonSymbols">
-             <enum>QAbstractSpinBox::NoButtons</enum>
+             <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
             </property>
             <property name="suffix">
              <string>%</string>
@@ -300,13 +356,13 @@
              <bool>false</bool>
             </property>
             <property name="orientation">
-             <enum>Qt::Vertical</enum>
+             <enum>Qt::Orientation::Vertical</enum>
             </property>
             <property name="invertedAppearance">
              <bool>false</bool>
             </property>
             <property name="textDirection">
-             <enum>QProgressBar::TopToBottom</enum>
+             <enum>QProgressBar::Direction::TopToBottom</enum>
             </property>
            </widget>
           </item>
@@ -324,23 +380,23 @@
           <item>
            <widget class="QLabel" name="label_Q_0">
             <property name="text">
-             <string> Q_0 eingeben und mit Enter bestätigen</string>
+             <string> N_Zyklen Formierung; eingeben und mit Enter bestätigen</string>
             </property>
            </widget>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
-             <widget class="QPushButton" name="pushButtonQ_0">
+             <widget class="QPushButton" name="pushButtonNZyklen">
               <property name="text">
                <string>Enter</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="doubleSpinBox_Q_0">
+             <widget class="QDoubleSpinBox" name="doubleSpinBox_NZyklen">
               <property name="suffix">
-               <string> Ah</string>
+               <string/>
               </property>
               <property name="decimals">
                <number>2</number>
@@ -354,15 +410,12 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="Anzeige_Q_0">
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
+             <widget class="QDoubleSpinBox" name="Anzeige_NZyklen">
               <property name="buttonSymbols">
-               <enum>QAbstractSpinBox::NoButtons</enum>
+               <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
               </property>
               <property name="suffix">
-               <string> Ah</string>
+               <string/>
               </property>
               <property name="decimals">
                <number>2</number>
@@ -372,22 +425,6 @@
               </property>
              </widget>
             </item>
-            <item>
-             <spacer name="horizontalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
            </layout>
           </item>
          </layout>
@@ -395,9 +432,9 @@
         <item row="0" column="0" colspan="2">
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
-           <spacer name="horizontalSpacer">
+           <spacer name="horizontalSpacer_4">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -455,11 +492,8 @@
             </item>
             <item>
              <widget class="QDoubleSpinBox" name="AnzeigeNspg">
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
               <property name="buttonSymbols">
-               <enum>QAbstractSpinBox::NoButtons</enum>
+               <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
               </property>
               <property name="suffix">
                <string> Ah</string>
@@ -472,22 +506,6 @@
               </property>
              </widget>
             </item>
-            <item>
-             <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Maximum</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
            </layout>
           </item>
          </layout>
@@ -496,11 +514,8 @@
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
            <widget class="QSpinBox" name="ProzentAnzeigeSOC">
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
             <property name="buttonSymbols">
-             <enum>QAbstractSpinBox::NoButtons</enum>
+             <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
             </property>
             <property name="suffix">
              <string>%</string>
@@ -525,13 +540,13 @@
              <bool>false</bool>
             </property>
             <property name="orientation">
-             <enum>Qt::Vertical</enum>
+             <enum>Qt::Orientation::Vertical</enum>
             </property>
             <property name="invertedAppearance">
              <bool>false</bool>
             </property>
             <property name="textDirection">
-             <enum>QProgressBar::TopToBottom</enum>
+             <enum>QProgressBar::Direction::TopToBottom</enum>
             </property>
            </widget>
           </item>
@@ -556,7 +571,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1023</width>
+     <width>1478</width>
      <height>22</height>
     </rect>
    </property>
@@ -595,22 +610,6 @@
   <include location="Bild.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>dial</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lcdNumber</receiver>
-   <slot>display(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>181</x>
-     <y>641</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>510</x>
-     <y>709</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>dial_Zeitintervall</sender>
    <signal>valueChanged(int)</signal>
