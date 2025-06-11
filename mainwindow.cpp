@@ -100,14 +100,6 @@ void MainWindow::WerteAusgabe()
     ui->tableWidget->setItem(rowCount, 9, new QTableWidgetItem(QString::number(nZyklen)));
 
 
-
-
-    // //Hier werden die ausgelesenen Werte in einer Tabelle gespeichert
-    // QVector<double> zeile;
-    // zeile << (elapsed / 1000.0) << potential << current << Q;
-    // tabelle.append(zeile);
-
-
    logNachricht("Wert gespeichert: " + QString::number(zeile[0]) + " s, "
     + QString::number(zeile[1]) + " V, "
     + QString::number(zeile[2]) + " A, "
