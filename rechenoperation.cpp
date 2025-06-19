@@ -1,36 +1,4 @@
-
 #include "rechenoperation.h"
-#include <QDebug>
-
-
-// Globale Variablen
-double SOC = 0.0; // State of Charge
-double SOH = 0.0; // State of Health
-double Q_N = 0.0; // Nennkapazität einer Zelle
-double Q_0 = 0.0; // Ladung einer vollen Zelle
-double Q_t = 0.0; // Ladung zum Zeitpunkt "t"
-double Q_min = 0.0;// Ladung einer leeren Zelle
-
-
-
-
-double BerechnungSOC(double Q_0, double Q_t) {
-
-    SOC = (Q_0 - Q_t) / Q_0 * 100;
-    qDebug() << "SOC berechnet:" << SOC << "%";
-    return SOC;
-}
-
-
-// rechenoperation.cpp
-double BerechnungSOH(double Q_0, double Q_min, double Q_N){
-
-
-    double SOH = ((Q_0 - Q_min) / (Q_N - Q_min)) * 100.0;
-    qDebug() << "SOH berechnet:" << SOH << "%";
-    return SOH;
-}
-
 
 // Integration der Stromstärke über der Zeit (Trapezregel)
 double BerechneLadung(const Tabelle& tabelle)
@@ -47,48 +15,186 @@ double BerechneLadung(const Tabelle& tabelle)
         Q += I_mittel * dt;
     }
 
+        qDebug() << "Ladung Q =" << Q << " C";
+        //logNachricht("Gesamtladung Q = " + QString::number(Q) + " C");
+
     return Q;
 }
 
-// Minimum Q für nZyklen bestimmen
-double BerechneQmin(const Tabelle& tabelle, int nZyklen)
-{
-    QVector<double> ladungswerte;
+// Extrema (Maxima/Minima) finden, je nach Suche
+// QVector<int> findeExtrema(const QVector<double>& daten, bool sucheMax){
+//     QVector<int> extrempunkte;
+
+//     int idx;
+
+//     for (int i = 1; i + 1 < daten.size(); ++i) {
+//         if (sucheMax) {
+//             if (daten[i] > daten[i - 1] && daten[i] > daten[i + 1]) {
+//                 qDebug() << "🔍 MAX bei i=" << i << ": " << daten[i-1] << daten[i] << daten[i+1];
+//                 extrempunkte.append(i);
+//             }
+//         } else {
+//             if (daten[i] < daten[i - 1] && daten[i] < daten[i + 1]) {
+//                 qDebug() << "🔍 MIN bei i=" << i << ": " << daten[i-1] << daten[i] << daten[i+1];
+//                 extrempunkte.append(i);
+//             }
+//         }
+//     }
+//     qDebug() << "→ alle gefundenen Extrema-Indizes:" << extrempunkte;
+//    // return extrempunkte;
+//     return daten;
+// }
+
+QVector<int> findeExtrema(const QVector<double>& daten, bool sucheMax){
+    QVector<int> extrempunkte;
+
+    for (int i = 1; i + 1 < daten.size(); ++i) {
+        if (sucheMax) {
+            if (daten[i] > daten[i - 1] && daten[i] > daten[i + 1]) {
+                qDebug() << "🔍 MAX bei i=" << i << ": " << daten[i-1] << daten[i] << daten[i+1];
+                extrempunkte.append(i);
+            }
+        } else {
+            if (daten[i] < daten[i - 1] && daten[i] < daten[i + 1]) {
+                qDebug() << "🔍 MIN bei i=" << i << ": " << daten[i-1] << daten[i] << daten[i+1];
+                extrempunkte.append(i);
+            }
+        }
+    }
+    qDebug() << "→ alle gefundenen Extrema-Indizes:" << extrempunkte;
+    return extrempunkte;  // Korrekt: Rückgabe der Indizes
+}
+
+
+
+
+
+// Gemeinsame Hilfsfunktion für Q0, QN und Qmin
+double findeQzyklenwert(const Tabelle& tabelle,int nZyklen,bool sucheMax) {
+    QVector<double> werte;
     for (const auto& zeile : tabelle)
-        ladungswerte.append(zeile[3]);
+        werte.append(zeile[3]);
 
-    QVector<int> minima = FindeMinima(ladungswerte);
+    QVector<double> geglaettet = GlaetteDaten(werte, 5);
+    QVector<int> ext = findeExtrema(geglaettet, sucheMax);
 
-    if (minima.size() >= nZyklen) {
-        return ladungswerte[minima[nZyklen - 1]];
-    } else if (!minima.isEmpty()) {
-        return ladungswerte[minima.first()];
-    } else {
+
+    if (ext.isEmpty()) {
+        logNachricht("❗ Kein Extrempunkt gefunden.");
         return 0.0;
     }
-}
 
-// Maxima-Finder (z. B. für Q_0)
-QVector<int> FindeMaxima(const QVector<double>& werte)
-{
-    QVector<int> maxima;
-    for (int i = 1; i < werte.size() - 1; ++i) {
-        if (werte[i] > werte[i - 1] && werte[i] > werte[i + 1]) {
-            maxima.append(i);
+    int idx;
+    if (nZyklen <= 0) {
+        idx = 0;
+    } else {
+        if (nZyklen <= ext.size()) {
+            idx = ext[nZyklen - 1];
+        } else {
+            idx = ext.last();
         }
     }
-    return maxima;
-}
 
-// Minima-Finder (z. B. für Q_min)
-QVector<int> FindeMinima(const QVector<double>& werte)
-{
-    QVector<int> minima;
-    for (int i = 1; i < werte.size() - 1; ++i) {
-        if (werte[i] < werte[i - 1] && werte[i] < werte[i + 1]) {
-            minima.append(i);
-        }
+    return werte[idx];
+
+    qDebug() << "→ findeQzyklenwert – ext.indizes:" << ext;
+    if (!ext.isEmpty()) {
+        qDebug() << "→ Ausgewählter idx=" << idx << ", werte[idx]=" << werte[idx];
     }
-    return minima;
+
+
+    qDebug() << "findeQzyklenwert: alle Extrema-Indizes =" << ext;
+    qDebug() << "findeQzyklenwert: verwendeter idx =" << idx
+             << ", werte[idx]=" << werte[idx];
+
 }
 
+double BerechneQ0(const Tabelle& tabelle, int nZyklen) {
+    return findeQzyklenwert(tabelle, nZyklen, true); // Maxima
+}
+
+double BerechneQN(const Tabelle& tabelle, int nZyklen) {
+    return findeQzyklenwert(tabelle, nZyklen, true); // Maxima
+}
+
+double BerechneQmin(const Tabelle& tabelle, int nZyklen) {
+    return findeQzyklenwert(tabelle, nZyklen, false); // Minima
+}
+
+// SOC und SOH, aufgeräumt ohne ternäre Operatoren
+double BerechneSOC(double Q0, double Qt) {
+    if (Q0 == 0.0) {
+        logNachricht("❗ Q0 ist 0 – SOC nicht berechenbar.");
+        return 0.0;
+    } else {
+        double soc = (Q0 - Qt) / Q0 * 100.0;
+        logNachricht("SOC berechnet: " + QString::number(soc) + "%");
+        return soc;
+    }
+}
+
+double BerechneSOH(double Q0, double Qmin, double QN) {
+    if (QN == Qmin) {
+        logNachricht("❗ QN und Qmin gleich – SOH nicht berechenbar.");
+        return 0.0;
+    } else {
+        double soh = (Q0 - Qmin) / (QN - Qmin) * 100.0;
+        logNachricht("SOH berechnet: " + QString::number(soh) + "%");
+        return soh;
+    }
+}
+
+
+QVector<double> GlaetteDaten(const QVector<double>& daten, int fensterGroesse = 5)
+{
+    QVector<double> geglaettet;
+    int halbF = fensterGroesse / 2;
+
+    for (int i = 0; i < daten.size(); ++i) {
+        double summe = 0.0;
+        int count = 0;
+
+        for (int j = -halbF; j <= halbF; ++j) {
+            int index = i + j;
+            if (index >= 0 && index < daten.size()) {
+                summe += daten[index];
+                count++;
+            }
+        }
+
+        geglaettet.append(summe / count);
+    }
+
+    return geglaettet;
+}
+
+
+
+
+
+//************* für LogNachricht, damit Fehlermeldung weg ist
+
+// In rechenoperation.cpp
+#include "rechenoperation.h"
+#include <QFile>
+#include <QTextStream>
+#include <QDateTime>
+
+void logNachricht(const QString &nachricht) {
+    QFile file("log.txt");
+    if (file.open(QIODevice::Append | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")
+            << " - " << nachricht << "\n";
+        file.close();
+    }
+}
+
+
+//******************************************************************************************************************************************
+//******************************************************************************************************************************************
+//******************************************************************************************************************************************
+//******************************************************************************************************************************************
+//******************************************************************************************************************************************
+//******************************************************************************************************************************************
+//******************************************************************************************************************************************

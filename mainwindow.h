@@ -29,15 +29,12 @@ class MainWindow : public QMainWindow
     void on_Beenden_clicked();
     void on_buttonNennSpg_clicked();
     void on_SocButton_clicked();
-    void berechneLadung();
-    void berechneQmin();
 
 
 
     void on_BatterieAnzeige_valueChanged(int value);
     void on_BatterieAnzeigeSOH_valueChanged(int value);
-    void on_SohButton_clicked();  // ✔️ korrekt
-
+    void on_SohButton_clicked();
 
 
     void logNachricht(const QString &nachricht);
@@ -48,6 +45,8 @@ class MainWindow : public QMainWindow
     void on_radioButton_Zeitformat_2_clicked();
     void on_copyButton_clicked();    
     void on_pushButtonNZyklen_clicked();
+
+    void on_QNManuellButton_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -65,11 +64,23 @@ private:
 
     QVector<QVector<double>> tabelle;  // Speicher für [Zeit, Spannung, Strom]
     QString currentTimeFormat = "hh:mm:ss"; //
-    double Q = 0.0;
+    double Q_t = 0.0;
     double Q_0 = 0.0;
     double Q_N = 0.0;
     double Q_min = 0.0;
-    double nZyklen = 1.0;
+    double nZyklen = 0.0;
+
+    bool nennSpgManuellGesetzt = false;
+
+    void initializeUI();
+    void initializeTimer();
+    void initializeHardware();
+
+private:
+    bool ersterDurchgang = true;
+    double erstesQmin = 0.0;
+    double erstesQN = 0.0;
+
 
 };
 

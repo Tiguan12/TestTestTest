@@ -323,9 +323,6 @@
         <string>Tab 2  (SOC/SOH)</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="3" column="0" colspan="2">
-         <widget class="QTextEdit" name="textAusgabe"/>
-        </item>
         <item row="5" column="0">
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
@@ -370,6 +367,85 @@
            <widget class="QPushButton" name="SohButton">
             <property name="text">
              <string>SOH-berechnen</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QTextEdit" name="textAusgabe"/>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap resource="Bild.qrc">:/Herunterladen.png</pixmap>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="5" column="1">
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QSpinBox" name="ProzentAnzeigeSOC">
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
+            </property>
+            <property name="suffix">
+             <string>%</string>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QProgressBar" name="BatterieAnzeige">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="value">
+             <number>24</number>
+            </property>
+            <property name="textVisible">
+             <bool>false</bool>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="invertedAppearance">
+             <bool>false</bool>
+            </property>
+            <property name="textDirection">
+             <enum>QProgressBar::Direction::TopToBottom</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="SocButton">
+            <property name="text">
+             <string>SOC-berechnen</string>
             </property>
            </widget>
           </item>
@@ -429,33 +505,6 @@
           </item>
          </layout>
         </item>
-        <item row="0" column="0" colspan="2">
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
-          <item>
-           <spacer name="horizontalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="pixmap">
-             <pixmap resource="Bild.qrc">:/Herunterladen.png</pixmap>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
         <item row="1" column="0" colspan="2">
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
@@ -469,6 +518,9 @@
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
              <widget class="QPushButton" name="buttonNennSpg">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Enter</string>
               </property>
@@ -508,52 +560,10 @@
             </item>
            </layout>
           </item>
-         </layout>
-        </item>
-        <item row="5" column="1">
-         <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QSpinBox" name="ProzentAnzeigeSOC">
-            <property name="buttonSymbols">
-             <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
-            </property>
-            <property name="suffix">
-             <string>%</string>
-            </property>
-            <property name="maximum">
-             <number>100</number>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QProgressBar" name="BatterieAnzeige">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="value">
-             <number>24</number>
-            </property>
-            <property name="textVisible">
-             <bool>false</bool>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Orientation::Vertical</enum>
-            </property>
-            <property name="invertedAppearance">
-             <bool>false</bool>
-            </property>
-            <property name="textDirection">
-             <enum>QProgressBar::Direction::TopToBottom</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="SocButton">
+           <widget class="QRadioButton" name="QNManuellButton">
             <property name="text">
-             <string>SOC-berechnen</string>
+             <string>&quot;Enter&quot; aktivieren/deaktivieren</string>
             </property>
            </widget>
           </item>
