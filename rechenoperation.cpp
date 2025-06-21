@@ -1,200 +1,142 @@
 #include "rechenoperation.h"
+#include <QDebug>
+#include <limits>
+#include <QFile>
+#include <QTextStream>
+#include <QDateTime>
+#include <algorithm>
 
-// Integration der Stromstärke über der Zeit (Trapezregel)
-double BerechneLadung(const Tabelle& tabelle)
-{
+// ------------- 1D-Extrema-Suche ----------------
+QVector<int> findeExtrema1D(const QVector<double>& daten, bool sucheMax) {
+    QVector<int> indices;
+    int n = daten.size();
+    if (n < 3) return indices;
+    for (int i = 1; i + 1 < n; ++i) {
+        double prev = daten[i - 1];
+        double curr = daten[i];
+        double next = daten[i + 1];
+        if (sucheMax ? (curr > prev && curr > next)
+                     : (curr < prev && curr < next)) {
+            indices.append(i);
+        }
+    }
+    return indices;
+}
+
+// ------------- 2D-Extrema-Suche ----------------
+QVector<int> findeExtremaTable(const QVector<QVector<double>>& tabelle, int spalte, bool sucheMax) {
+    QVector<int> indices;
+    int n = tabelle.size();
+    if (n < 3) return indices;
+    for (int i = 1; i + 1 < n; ++i) {
+        double prev = tabelle[i - 1][spalte];
+        double curr = tabelle[i][spalte];
+        double next = tabelle[i + 1][spalte];
+        if (sucheMax ? (curr > prev && curr > next)
+                     : (curr < prev && curr < next)) {
+            indices.append(i);
+        }
+    }
+    return indices;
+}
+
+// ---------- Integration der Stromstärke ----------
+double BerechneLadung(const Tabelle& tabelle) {
     double Q = 0.0;
-
     for (int i = 1; i < tabelle.size(); ++i) {
         double t1 = tabelle[i - 1][0];
         double t2 = tabelle[i][0];
         double I1 = tabelle[i - 1][2];
         double I2 = tabelle[i][2];
         double dt = t2 - t1;
-        double I_mittel = (I1 + I2) / 2.0;
-        Q += I_mittel * dt;
+        Q += (I1 + I2) / 2.0 * dt;
     }
-
-        qDebug() << "Ladung Q =" << Q << " C";
-        //logNachricht("Gesamtladung Q = " + QString::number(Q) + " C");
-
+    qDebug() << "Ladung Q =" << Q << "C";
     return Q;
 }
 
-// Extrema (Maxima/Minima) finden, je nach Suche
-// QVector<int> findeExtrema(const QVector<double>& daten, bool sucheMax){
-//     QVector<int> extrempunkte;
-
-//     int idx;
-
-//     for (int i = 1; i + 1 < daten.size(); ++i) {
-//         if (sucheMax) {
-//             if (daten[i] > daten[i - 1] && daten[i] > daten[i + 1]) {
-//                 qDebug() << "🔍 MAX bei i=" << i << ": " << daten[i-1] << daten[i] << daten[i+1];
-//                 extrempunkte.append(i);
-//             }
-//         } else {
-//             if (daten[i] < daten[i - 1] && daten[i] < daten[i + 1]) {
-//                 qDebug() << "🔍 MIN bei i=" << i << ": " << daten[i-1] << daten[i] << daten[i+1];
-//                 extrempunkte.append(i);
-//             }
-//         }
-//     }
-//     qDebug() << "→ alle gefundenen Extrema-Indizes:" << extrempunkte;
-//    // return extrempunkte;
-//     return daten;
-// }
-
-QVector<int> findeExtrema(const QVector<double>& daten, bool sucheMax){
-    QVector<int> extrempunkte;
-
-    for (int i = 1; i + 1 < daten.size(); ++i) {
-        if (sucheMax) {
-            if (daten[i] > daten[i - 1] && daten[i] > daten[i + 1]) {
-                qDebug() << "🔍 MAX bei i=" << i << ": " << daten[i-1] << daten[i] << daten[i+1];
-                extrempunkte.append(i);
-            }
-        } else {
-            if (daten[i] < daten[i - 1] && daten[i] < daten[i + 1]) {
-                qDebug() << "🔍 MIN bei i=" << i << ": " << daten[i-1] << daten[i] << daten[i+1];
-                extrempunkte.append(i);
-            }
-        }
-    }
-    qDebug() << "→ alle gefundenen Extrema-Indizes:" << extrempunkte;
-    return extrempunkte;  // Korrekt: Rückgabe der Indizes
-}
-
-
-
-
-
-// Gemeinsame Hilfsfunktion für Q0, QN und Qmin
-double findeQzyklenwert(const Tabelle& tabelle,int nZyklen,bool sucheMax) {
-    QVector<double> werte;
+// ---------- BerechneQmin nutzt eine 1D-Extrema-Suche ----------
+// ------------------------------------------------
+// Wrapper: Bekommt Spalte aus Tabelle, bestimmt erstes Minimum
+// ------------------------------------------------
+// ------------------------------------------------
+// 2D-Wrapper: Bestimmt das N-te Minimum in einer Spalte
+// ------------------------------------------------
+double BerechneQmin2D(const QVector<QVector<double>>& tabelle, int spalte, int nZyklen)
+{
+    // 1) Spalte extrahieren
+    QVector<double> spalteDaten;
+    spalteDaten.reserve(tabelle.size());
     for (const auto& zeile : tabelle)
-        werte.append(zeile[3]);
+        spalteDaten.append(zeile[spalte]);
 
-    QVector<double> geglaettet = GlaetteDaten(werte, 5);
-    QVector<int> ext = findeExtrema(geglaettet, sucheMax);
+    // 2) Indizes der Minima finden (sucheMax=false)
+    QVector<int> minIndices = findeExtremaTable(tabelle, spalte, false);
 
+    // 3) Überprüfen, ob nZyklen im gültigen Bereich liegt
+    if (nZyklen < 0 || nZyklen >= minIndices.size())
+        return std::numeric_limits<double>::quiet_NaN();
 
-    if (ext.isEmpty()) {
-        logNachricht("❗ Kein Extrempunkt gefunden.");
-        return 0.0;
+    // 4) Alle Minima ab dem gewünschten Zyklus extrahieren
+    QVector<double> result;
+    for (int i = nZyklen; i < minIndices.size(); ++i)
+    {
+        int row = minIndices[i];
+        result.append(spalteDaten[row]);
     }
 
-    int idx;
-    if (nZyklen <= 0) {
-        idx = 0;
-    } else {
-        if (nZyklen <= ext.size()) {
-            idx = ext[nZyklen - 1];
-        } else {
-            idx = ext.last();
-        }
-    }
-
-    return werte[idx];
-
-    qDebug() << "→ findeQzyklenwert – ext.indizes:" << ext;
-    if (!ext.isEmpty()) {
-        qDebug() << "→ Ausgewählter idx=" << idx << ", werte[idx]=" << werte[idx];
-    }
-
-
-    qDebug() << "findeQzyklenwert: alle Extrema-Indizes =" << ext;
-    qDebug() << "findeQzyklenwert: verwendeter idx =" << idx
-             << ", werte[idx]=" << werte[idx];
-
+    // Rückgabe des letzten Minimums oder NaN, wenn keine gefunden wurden
+    return result.isEmpty() ? std::numeric_limits<double>::quiet_NaN() : result.last();
 }
 
-double BerechneQ0(const Tabelle& tabelle, int nZyklen) {
-    return findeQzyklenwert(tabelle, nZyklen, true); // Maxima
-}
 
-double BerechneQN(const Tabelle& tabelle, int nZyklen) {
-    return findeQzyklenwert(tabelle, nZyklen, true); // Maxima
-}
 
-double BerechneQmin(const Tabelle& tabelle, int nZyklen) {
-    return findeQzyklenwert(tabelle, nZyklen, false); // Minima
-}
 
-// SOC und SOH, aufgeräumt ohne ternäre Operatoren
+// ---------- SOC / SOH / Glätten ----------
 double BerechneSOC(double Q0, double Qt) {
     if (Q0 == 0.0) {
-        logNachricht("❗ Q0 ist 0 – SOC nicht berechenbar.");
+        logNachricht("Q0 ist 0 – SOC nicht berechenbar.");
         return 0.0;
-    } else {
-        double soc = (Q0 - Qt) / Q0 * 100.0;
-        logNachricht("SOC berechnet: " + QString::number(soc) + "%");
-        return soc;
     }
+    double soc = (Q0 - Qt) / Q0 * 100.0;
+    logNachricht("SOC berechnet: " + QString::number(soc) + "%");
+    return soc;
 }
 
 double BerechneSOH(double Q0, double Qmin, double QN) {
     if (QN == Qmin) {
-        logNachricht("❗ QN und Qmin gleich – SOH nicht berechenbar.");
+        logNachricht("QN == Qmin – SOH nicht berechenbar.");
         return 0.0;
-    } else {
-        double soh = (Q0 - Qmin) / (QN - Qmin) * 100.0;
-        logNachricht("SOH berechnet: " + QString::number(soh) + "%");
-        return soh;
     }
+    double soh = (Q0 - Qmin) / (QN - Qmin) * 100.0;
+    logNachricht("SOH berechnet: " + QString::number(soh) + "%");
+    return soh;
 }
 
-
-QVector<double> GlaetteDaten(const QVector<double>& daten, int fensterGroesse = 5)
-{
+QVector<double> GlaetteDaten(const QVector<double>& daten, int fensterGroesse) {
     QVector<double> geglaettet;
     int halbF = fensterGroesse / 2;
-
     for (int i = 0; i < daten.size(); ++i) {
         double summe = 0.0;
         int count = 0;
-
         for (int j = -halbF; j <= halbF; ++j) {
-            int index = i + j;
-            if (index >= 0 && index < daten.size()) {
-                summe += daten[index];
-                count++;
+            int idx = i + j;
+            if (idx >= 0 && idx < daten.size()) {
+                summe += daten[idx];
+                ++count;
             }
         }
-
         geglaettet.append(summe / count);
     }
-
     return geglaettet;
 }
 
-
-
-
-
-//************* für LogNachricht, damit Fehlermeldung weg ist
-
-// In rechenoperation.cpp
-#include "rechenoperation.h"
-#include <QFile>
-#include <QTextStream>
-#include <QDateTime>
-
+// ---------- Log-Funktion ----------
 void logNachricht(const QString &nachricht) {
     QFile file("log.txt");
     if (file.open(QIODevice::Append | QIODevice::Text)) {
         QTextStream out(&file);
         out << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")
             << " - " << nachricht << "\n";
-        file.close();
     }
 }
-
-
-//******************************************************************************************************************************************
-//******************************************************************************************************************************************
-//******************************************************************************************************************************************
-//******************************************************************************************************************************************
-//******************************************************************************************************************************************
-//******************************************************************************************************************************************
-//******************************************************************************************************************************************

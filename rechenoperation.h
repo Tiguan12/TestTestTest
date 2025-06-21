@@ -7,15 +7,25 @@
 
 double BerechneSOC(double Q0, double Qt);
 double BerechneSOH(double Q0, double Qmin, double QN);
+double BerechneQmin2D(const QVector<QVector<double>>& tabelle, int spalte, int nZyklen);
+//QVector<double> BerechneQmin2D(const QVector<QVector<double>>& tabelle, int spalte, int nZyklen);
 
-QVector<int> findeExtrema(const QVector<double>& daten, bool sucheMax);
+//QVector<int> findeExtrema(const QVector<QVector<double>>& tabelle, bool sucheMax);
+QVector<QVector<double>> findeExtrema1D(const QVector<QVector<double>>& tabelle, bool sucheMax);
+QVector<int> findeExtremaTable(const QVector<QVector<double>>& tabelle, int spalte, bool sucheMax);
+
 //double findeQzyklenwert(const Tabelle& tabelle, int nZyklen, bool sucheMax);
 using Tabelle = QVector<QVector<double>>;
 double BerechneQ0(const Tabelle& tabelle, int nZyklen);
 double BerechneQN(const Tabelle& tabelle, int nZyklen);
-double BerechneQmin(const Tabelle& tabelle, int nZyklen);
+//double BerechneQmin(const Tabelle& tabelle, int nZyklen);
 double findeQzyklenwert(const QVector<double>& daten, int nZyklen, bool sucheMax);
- void logNachricht(const QString& nachricht);
+void logNachricht(const QString& nachricht);
+
+
+
+double BerechneQmin(const QVector<double>& spalteQt, int nZyklen);
+
 
 #endif // RECHENOPERATION_H
 
