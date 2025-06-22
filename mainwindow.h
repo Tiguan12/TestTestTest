@@ -71,6 +71,7 @@ private:
     double nZyklen = 0.0;
 
     bool nennSpgManuellGesetzt = false;
+    double Q0VonBerechnen(); // deine BerechneQ_0-Funktion, mit Index 0
 
     void initializeUI();
     void initializeTimer();
@@ -80,6 +81,7 @@ private:
     bool ersterDurchgang = true;
     double erstesQmin = 0.0;
     double erstesQN = 0.0;
+
 
 
 };

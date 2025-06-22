@@ -90,6 +90,52 @@ double BerechneQmin2D(const QVector<QVector<double>>& tabelle, int spalte, int n
 }
 
 
+double BerechneQ_0(const QVector<QVector<double>>& tabelle, int spalte, int nZyklen)
+{
+    // 1) Spalte extrahieren
+    QVector<double> spalteDaten;
+    spalteDaten.reserve(tabelle.size());
+    for (const auto& zeile : tabelle)
+        spalteDaten.append(zeile[spalte]);
+
+    // 2) Indizes der Maxima finden (sucheMax=true)
+    QVector<int> maxIndices = findeExtremaTable(tabelle, spalte, true);
+
+    // 3) Überprüfen, ob nZyklen im gültigen Bereich liegt
+    if (nZyklen < 0 || nZyklen >= maxIndices.size())
+        return std::numeric_limits<double>::quiet_NaN(); // NaN zurückgeben, wenn ungültig
+
+    // 4) Alle Maxima ab dem gewünschten Zyklus extrahieren
+    QVector<double> result;
+    for (int i = nZyklen; i < maxIndices.size(); ++i)
+    {
+        int row = maxIndices[i];
+        result.append(spalteDaten[row]);
+    }
+
+    // 5) Das letzte Maximum zurückgeben
+    return result.isEmpty() ? std::numeric_limits<double>::quiet_NaN() : result.last();
+}
+
+double BerechneQ_N(const QVector<QVector<double>>& tabelle, int spalte, int nZyklen)
+{
+    // 1) Spalte extrahieren
+    QVector<double> spalteDaten;
+    spalteDaten.reserve(tabelle.size());
+    for (const auto& zeile : tabelle)
+        spalteDaten.append(zeile[spalte]);
+
+    // 2) Indizes der Maxima finden (sucheMax = true)
+    QVector<int> maxIndices = findeExtremaTable(tabelle, spalte, true);
+
+    // 3) Gültigkeit prüfen
+    if (nZyklen < 0 || nZyklen >= maxIndices.size())
+        return std::numeric_limits<double>::quiet_NaN();
+
+    // 4) Genau **das erste** Maximum ab nZyklen zurückgeben
+    int row = maxIndices[nZyklen];
+    return spalteDaten[row];
+}
 
 
 // ---------- SOC / SOH / Glätten ----------

@@ -8,6 +8,8 @@
 double BerechneSOC(double Q0, double Qt);
 double BerechneSOH(double Q0, double Qmin, double QN);
 double BerechneQmin2D(const QVector<QVector<double>>& tabelle, int spalte, int nZyklen);
+double BerechneQ_0(const QVector<QVector<double>>& tabelle, int spalte, int nZyklen);
+double BerechneQ_N(const QVector<QVector<double>>& tabelle, int spalte, int nZyklen);
 //QVector<double> BerechneQmin2D(const QVector<QVector<double>>& tabelle, int spalte, int nZyklen);
 
 //QVector<int> findeExtrema(const QVector<QVector<double>>& tabelle, bool sucheMax);
@@ -16,7 +18,7 @@ QVector<int> findeExtremaTable(const QVector<QVector<double>>& tabelle, int spal
 
 //double findeQzyklenwert(const Tabelle& tabelle, int nZyklen, bool sucheMax);
 using Tabelle = QVector<QVector<double>>;
-double BerechneQ0(const Tabelle& tabelle, int nZyklen);
+//double BerechneQ0(const Tabelle& tabelle, int nZyklen);
 double BerechneQN(const Tabelle& tabelle, int nZyklen);
 //double BerechneQmin(const Tabelle& tabelle, int nZyklen);
 double findeQzyklenwert(const QVector<double>& daten, int nZyklen, bool sucheMax);

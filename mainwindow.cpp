@@ -41,6 +41,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::WerteAusgabe()
 {
+
     QElapsedTimer timerTest;
     timerTest.start();
 
@@ -213,8 +214,8 @@ void MainWindow::on_stopButton_clicked()
         {1.0, 0.0998, 0.1},
         {2.0, 0.1987, 0.2},
         {3.0, 0.2955, 0.3},
-        {4.0, 0.3894, 10.0}, // Max1
-        {5.0, 0.4794, -10.0}, // Min1
+        {4.0, 0.3894, 9.0}, // Max1
+        {5.0, 0.4794, -9.0}, // Min1
         {6.0, 0.5646, 0.6},
         {7.0, 0.6442, 0.7},
         {8.0, 0.7174, 0.8},
@@ -222,24 +223,24 @@ void MainWindow::on_stopButton_clicked()
         {10.0, 0.8415, 10.0}, // Max2
         {11.0, 0.8912, -10.0}, // Min2
         {12.0, 0.9320, 1.2},
-//        {13.0, 0.9636, 1.3},
-//        {14.0, 0.9850, 1.4},
-//        {15.0, 0.9970, 1.5},
-//        {16.0, 0.9996, 10.0}, // Max3
-//        {17.0, 0.9917, -11.0}, // Min3
-//        {18.0, 0.9738, 1.8},
-//        {19.0, 0.9454, 1.9},
-//        {20.0, 0.9129, 2.0},
-//        {21.0, 0.8367, 2.1},
-//        {22.0, 0.7457, 10.0}, // Max4
-//        {23.0, 0.6570, -12.0}, // Min4
-//        {24.0, 0.5507, 2.4},
-//        {25.0, 0.5985, 2.5},
-//        {26.0, 0.7626, 2.6},
-//        {27.0, 0.9564, 2.7},
-//        {28.0, 0.9937, 10.0}, // Max5
-//        {29.0, 0.6636, -13.0}, // Min5
-//        {30.0, 0.1411, 3.0},
+        {13.0, 0.9636, 1.3},
+        {14.0, 0.9850, 1.4},
+        {15.0, 0.9970, 1.5},
+        {16.0, 0.9996, 11.0}, // Max3
+        {17.0, 0.9917, -11.0}, // Min3
+        {18.0, 0.9738, 1.8},
+        {19.0, 0.9454, 1.9},
+        {20.0, 0.9129, 2.0},
+        {21.0, 0.8367, 2.1},
+        {22.0, 0.7457, 12.0}, // Max4
+        {23.0, 0.6570, -12.0}, // Min4
+        {24.0, 0.5507, 2.4},
+        {25.0, 0.5985, 2.5},
+        {26.0, 0.7626, 2.6},
+        {27.0, 0.9564, 2.7},
+        {28.0, 0.9937, 13.0}, // Max5
+        {29.0, 0.6636, -13.0}, // Min5
+        {30.0, 0.1411, 3.0},
 //        {31.0, -0.1906, 3.1},
 //        {32.0, -0.5514, 3.2},
 //        {33.0, -0.9463, 3.3},
@@ -270,6 +271,26 @@ void MainWindow::on_stopButton_clicked()
     Q_min = BerechneQmin2D(tabelle,2,nZyklen);
     qDebug() <<"Q_min ist =:" << Q_min;
     //qDebug() <<"Q_min ist =:" << minimaAbZyklus;
+
+    Q_0 = BerechneQ_0(tabelle,2,nZyklen);
+    qDebug() <<"Q_0 bzw. Q_Max ist =:" << Q_0;
+
+
+
+    double q0Wert = 0.0;
+    if (nennSpgManuellGesetzt) {
+        q0Wert = Q_N;
+
+    } else {
+        q0Wert = BerechneQ_N (tabelle, 2, nZyklen);
+    }
+
+    qDebug() << "Verwendeter Q_N:" << q0Wert;
+    ui->AnzeigeNspg->setValue(q0Wert);
+
+
+
+
 
 }
 
@@ -307,7 +328,7 @@ void MainWindow::on_buttonNennSpg_clicked()
     Q_N = ui->doubleSpinBoxNennSpg->value();
     ui->AnzeigeNspg->setValue(Q_N);
     logNachricht("Nennkapazität manuell gesetzt auf: " + QString::number(Q_N));
-    nennSpgManuellGesetzt = true;
+        nennSpgManuellGesetzt = true;
 }
 
 
@@ -519,9 +540,12 @@ void MainWindow::on_QNManuellButton_clicked()
     if (ui->buttonNennSpg->isEnabled()) {
         // Button ist momentan aktiviert – also deaktivieren
         ui->buttonNennSpg->setEnabled(false);
+         Q_N= BerechneQ_N (tabelle, 2, nZyklen);
     } else {
         // Button ist momentan deaktiviert – also aktivieren
         ui->buttonNennSpg->setEnabled(true);
+
+
     }
 
 }
