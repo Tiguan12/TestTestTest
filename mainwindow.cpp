@@ -226,19 +226,19 @@ void MainWindow::on_stopButton_clicked()
         {13.0, 0.9636, 1.3},
         {14.0, 0.9850, 1.4},
         {15.0, 0.9970, 1.5},
-        {16.0, 0.9996, 11.0}, // Max3
+        {16.0, 0.9996,11.0}, // Max3
         {17.0, 0.9917, -11.0}, // Min3
         {18.0, 0.9738, 1.8},
-        {19.0, 0.9454, 1.9},
+       {19.0, 0.9454, 1.9},
         {20.0, 0.9129, 2.0},
         {21.0, 0.8367, 2.1},
-        {22.0, 0.7457, 12.0}, // Max4
+        {22.0, 0.7457, 5.0}, // Max4
         {23.0, 0.6570, -12.0}, // Min4
         {24.0, 0.5507, 2.4},
         {25.0, 0.5985, 2.5},
         {26.0, 0.7626, 2.6},
         {27.0, 0.9564, 2.7},
-        {28.0, 0.9937, 13.0}, // Max5
+        {28.0, 0.9937, 7.0}, // Max5
         {29.0, 0.6636, -13.0}, // Min5
         {30.0, 0.1411, 3.0},
 //        {31.0, -0.1906, 3.1},
@@ -261,6 +261,9 @@ void MainWindow::on_stopButton_clicked()
 //        {48.0, -0.7683, 4.8},
 //        {49.0, -0.9538, 4.9}
     };
+
+    Q_t = tabelle.last()[2];  // ✅ Richtig: Spalte 3 = Q_t
+
 
 //    QVector<int> quimbi = findeExtrema1D(tabelle[2], true);
     QVector<int> Quimbi = findeExtremaTable(tabelle, 2, true);
@@ -289,8 +292,12 @@ void MainWindow::on_stopButton_clicked()
     ui->AnzeigeNspg->setValue(q0Wert);
 
 
+    double SOH = 0.0;
 
-
+   SOH = BerechneSOH(Q_0, Q_min, q0Wert);
+    ui->BatterieAnzeigeSOH->setValue(static_cast<int>(SOH));
+    ui->ProzentAnzeigeSOH->setValue(static_cast<int>(SOH));
+    qDebug() << "Der SOH beträgt:" << SOH << "%";
 
 }
 

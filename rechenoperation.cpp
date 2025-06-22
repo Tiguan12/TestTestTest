@@ -154,7 +154,7 @@ double BerechneSOH(double Q0, double Qmin, double QN) {
         logNachricht("QN == Qmin – SOH nicht berechenbar.");
         return 0.0;
     }
-    double soh = (Q0 - Qmin) / (QN - Qmin) * 100.0;
+    double soh = ((Q0 - Qmin) / (QN - Qmin)) * 100.0;
     logNachricht("SOH berechnet: " + QString::number(soh) + "%");
     return soh;
 }
